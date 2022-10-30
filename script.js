@@ -49,10 +49,10 @@ function clearScreen() {
 
 function addOperation(operator){
     firstValue = secondDisplayDiv.textContent
-    operation = operator
-    if (operation === "%") {
-        evaluate()
+    if (!firstValue){
+        return
     }
+    operation = operator
     firstDisplayDiv.textContent = `${firstValue} ${operation}`
     resetScreen()
 }
@@ -63,6 +63,8 @@ function evaluate() {
         return
     } else if (operation != "%" && !secondValue) {
         return
+    } else if (operation === "%"){
+        secondValue = ""
     } else if (operation === "÷" && secondValue === "0"){
         firstDisplayDiv.textContent = "Can't divide by 0!"
         secondDisplayDiv.textContent = ""
