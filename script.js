@@ -56,6 +56,10 @@ function addOperation(operator){
     firstDisplayDiv.textContent = `${firstValue} ${operation}`
     resetScreen()
 }
+function roundAnswer(answer){
+    answer = Math.floor(answer * 100000 + 1) / 100000
+    return answer
+}
 
 function evaluate() {
     secondValue = secondDisplayDiv.textContent
@@ -70,7 +74,7 @@ function evaluate() {
         secondDisplayDiv.textContent = ""
         return
     }
-    secondDisplayDiv.textContent = operate(operation, firstValue, secondValue)
+    secondDisplayDiv.textContent = roundAnswer(operate(operation, firstValue, secondValue))
     firstDisplayDiv.textContent = `${firstValue} ${operation} ${secondValue} =`
 }
 
