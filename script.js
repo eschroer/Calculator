@@ -54,6 +54,10 @@ function addOperation(operator){
     operation = operator
     if (!firstValue){
         return
+    } else if (operation === "%"){
+        firstDisplayDiv.textContent = `${firstValue} ${operation}`
+        resetScreen()
+        evaluate()
     } else if (firstDisplayDiv.textContent.includes("=") && secondDisplayDiv.textContent !== ""){
         firstDisplayDiv.textContent =`${result} ${operation}`
         resetScreen()
@@ -64,7 +68,6 @@ function addOperation(operator){
             firstDisplayDiv.textContent = `${result} ${operator}`
             resetScreen()
         }
-        firstValue = firstDisplayDiv.textContent.split(" ")[0]
         operation = firstDisplayDiv.textContent.split(" ")[1]
         evaluate()
         firstDisplayDiv.textContent = `${result} ${operation}`
@@ -93,12 +96,10 @@ function evaluate() {
         firstDisplayDiv.textContent = "Can't divide by 0!"
         secondDisplayDiv.textContent = ""
         return
-    } else {
-        result = operate(operation, firstValue, secondValue)
-        secondDisplayDiv.textContent = result
-        firstDisplayDiv.textContent = `${firstValue} ${operation} ${secondValue} =`
-    }
-   
+    } 
+    result = operate(operation, firstValue, secondValue)
+    secondDisplayDiv.textContent = result
+    firstDisplayDiv.textContent = `${firstValue} ${operation} ${secondValue} =`
 }
 
 function operate (operator, num1, num2) {
