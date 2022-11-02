@@ -1,6 +1,7 @@
 let firstValue = 0
 let secondValue = 0
 let operation = null
+let result = null
 
 const firstDisplayDiv = document.querySelector(".first-display");
 const secondDisplayDiv = document.querySelector(".second-display")
@@ -24,6 +25,7 @@ pointBtn.addEventListener("click", appendPoint)
 equalsBtn.addEventListener("click", evaluate)
 
 function appendNumber(number){
+    if (secondDisplayDiv.textContent.length >= 14) return
     secondDisplayDiv.textContent += number
 }
 function appendPoint(){
@@ -49,19 +51,37 @@ function clearScreen() {
 
 function addOperation(operator){
     firstValue = secondDisplayDiv.textContent
+    operation = operator
     if (!firstValue){
         return
+    } else if (firstDisplayDiv.textContent.includes("=") && secondDisplayDiv.textContent !== ""){
+        firstDisplayDiv.textContent =`${result} ${operation}`
+        resetScreen()
+    } else if (firstDisplayDiv.textContent !== ""){
+        if (firstDisplayDiv.textContent.split(" ")[1] !== operator){
+            operation = firstDisplayDiv.textContent.split(" ")[1]
+            evaluate()
+            firstDisplayDiv.textContent = `${result} ${operator}`
+            resetScreen()
+        }
+        firstValue = firstDisplayDiv.textContent.split(" ")[0]
+        operation = firstDisplayDiv.textContent.split(" ")[1]
+        evaluate()
+        firstDisplayDiv.textContent = `${result} ${operation}`
+        resetScreen()
+    } else {
+        firstDisplayDiv.textContent = `${firstValue} ${operation}`
+        resetScreen()
     }
-    operation = operator
-    firstDisplayDiv.textContent = `${firstValue} ${operation}`
-    resetScreen()
+    
 }
-function roundAnswer(answer){
-    answer = Math.floor(answer * 100000 + 1) / 100000
-    return answer
-}
+// function roundAnswer(answer){
+//     answer = Math.round(answer * 100000) / 100000
+//     return answer
+// }
 
 function evaluate() {
+    firstValue = firstDisplayDiv.textContent.split(" ")[0]
     secondValue = secondDisplayDiv.textContent
     if (!operation){
         return
@@ -73,9 +93,12 @@ function evaluate() {
         firstDisplayDiv.textContent = "Can't divide by 0!"
         secondDisplayDiv.textContent = ""
         return
+    } else {
+        result = operate(operation, firstValue, secondValue)
+        secondDisplayDiv.textContent = result
+        firstDisplayDiv.textContent = `${firstValue} ${operation} ${secondValue} =`
     }
-    secondDisplayDiv.textContent = roundAnswer(operate(operation, firstValue, secondValue))
-    firstDisplayDiv.textContent = `${firstValue} ${operation} ${secondValue} =`
+   
 }
 
 function operate (operator, num1, num2) {

@@ -32,9 +32,8 @@ body {
     font-size: 20px;
 }
 .second-display{
-    font-size: 30px;
+    font-size: 25px;
     padding: 6px;
-    flex-wrap: wrap;
 }
 button {
     background-color: rgb(246, 205, 128);
@@ -47,6 +46,10 @@ button {
 }
 button:hover {
     background-color: rgb(246, 167, 22);
+}
+.row {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
 }
 a {
     text-decoration: none;
