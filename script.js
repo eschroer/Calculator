@@ -6,13 +6,13 @@ let result = null
 const firstDisplayDiv = document.querySelector(".first-display");
 const secondDisplayDiv = document.querySelector(".second-display")
 const clearBtn = document.querySelector(".clear");
-const negBtn = document.querySelector(".neg")
+const deleteBtn = document.querySelector(".delete")
 const numberBtns = document.querySelectorAll(".number");
 const operatorBtns = document.querySelectorAll(".operator");
 const pointBtn = document.querySelector(".point")
 const equalsBtn = document.querySelector(".equals")
 
-
+window.addEventListener("keydown", handleKeys)
 numberBtns.forEach((button) =>
     button.addEventListener("click", () => appendNumber(button.textContent))
 )
@@ -20,9 +20,10 @@ operatorBtns.forEach((button) =>
     button.addEventListener("click", () => addOperation(button.textContent))
 )
 clearBtn.addEventListener("click", clearScreen)
-negBtn.addEventListener("click", toggleNegSign)
+deleteBtn.addEventListener("click", deleteCharacter)
 pointBtn.addEventListener("click", appendPoint)
 equalsBtn.addEventListener("click", evaluate)
+
 
 function appendNumber(number){
     if (secondDisplayDiv.textContent.length >= 14) return
@@ -32,12 +33,8 @@ function appendPoint(){
     if (secondDisplayDiv.textContent.includes(".")) return
     secondDisplayDiv.textContent += "."
 }
-function toggleNegSign(){
-    if (secondDisplayDiv.textContent.includes("-")){
-        secondDisplayDiv.textContent = secondDisplayDiv.textContent.slice(1)
-        return
-    } 
-    secondDisplayDiv.textContent = "-" + secondDisplayDiv.textContent
+function deleteCharacter(){
+    secondDisplayDiv.textContent = secondDisplayDiv.textContent.slice(0, -1)
 }
 
 function resetScreen() {
@@ -59,7 +56,7 @@ function addOperation(operator){
         resetScreen()
         evaluate()
     } else if (firstDisplayDiv.textContent.includes("=") && secondDisplayDiv.textContent !== ""){
-        firstDisplayDiv.textContent =`${result} ${operation}`
+        firstDisplayDiv.textContent =`${firstValue} ${operation}`
         resetScreen()
     } else if (firstDisplayDiv.textContent !== ""){
         if (firstDisplayDiv.textContent.split(" ")[1] !== operator){
@@ -78,10 +75,6 @@ function addOperation(operator){
     }
     
 }
-// function roundAnswer(answer){
-//     answer = Math.round(answer * 100000) / 100000
-//     return answer
-// }
 
 function evaluate() {
     firstValue = firstDisplayDiv.textContent.split(" ")[0]
@@ -135,4 +128,31 @@ function multiply(num1, num2){
 }
 function percentage(num1){
     return num1 / 100
+}
+function transformKey(key){
+    if (key === "/") return "÷"
+    if (key === "*") return "x"
+}
+function handleKeys(event){
+    if (event.key >= 0){   
+        appendNumber(event.key)
+    }
+    if(event.key === "."){
+        appendPoint()
+    }
+    if(event.key === "+"||event.key === "-"||event.key ==="%"){
+        addOperation(event.key)
+    }
+    if(event.key ==="*"|| event.key === "/"){
+        addOperation(transformKey(event.key))
+    }
+    if (event.key === "="|| event.key === "Enter"){
+        evaluate()
+    } 
+    if (event.key === "Escape"){
+        clearScreen()
+    }
+    if (event.key ==="Delete" || event.key === "Backspace"){
+        deleteCharacter()
+    }
 }

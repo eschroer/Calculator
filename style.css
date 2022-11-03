@@ -12,7 +12,7 @@ body {
 }
 .container {
     background-color: rgba(0, 0, 0, 0.735);
-    max-width: 300px;
+    max-width: 325px;
     border-radius: 8px;
     padding: 10px;
     display: flex;
@@ -23,7 +23,7 @@ body {
 .first-display, .second-display {
     color: white;
     background-color: rgba(0, 0, 0, 0.487);
-    min-width: 275px;
+    min-width: 300px;
     min-height: 50px;
     
 }
